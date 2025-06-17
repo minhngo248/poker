@@ -97,6 +97,48 @@ class HandDetectorTest {
     }
 
     @Test
+    void testStraightFlushWithAceLow() {
+        List<Card> cards = new ArrayList<>(List.of(
+                new Card(Value.ACE, Suit.HEARTS),
+                new Card(Value.TWO, Suit.HEARTS),
+                new Card(Value.THREE, Suit.HEARTS),
+                new Card(Value.FOUR, Suit.HEARTS),
+                new Card(Value.FIVE, Suit.HEARTS),
+                new Card(Value.SIX, Suit.CLUBS),
+                new Card(Value.SEVEN, Suit.DIAMONDS)
+        ));
+        List<Card> result = HandDetector.getHandValues(cards);
+        assertEquals(List.of(
+                new Card(Value.FIVE, Suit.HEARTS),
+                new Card(Value.FOUR, Suit.HEARTS),
+                new Card(Value.THREE, Suit.HEARTS),
+                new Card(Value.TWO, Suit.HEARTS),
+                new Card(Value.ACE, Suit.HEARTS)
+        ), result, "Should identify Straight Flush with Ace as low card");
+    }
+
+    @Test
+    void testStraightFlushWithAceAndSix() {
+        List<Card> cards = new ArrayList<>(List.of(
+                new Card(Value.ACE, Suit.HEARTS),
+                new Card(Value.TWO, Suit.HEARTS),
+                new Card(Value.THREE, Suit.HEARTS),
+                new Card(Value.FOUR, Suit.HEARTS),
+                new Card(Value.FIVE, Suit.HEARTS),
+                new Card(Value.SIX, Suit.HEARTS),
+                new Card(Value.SEVEN, Suit.DIAMONDS)
+        ));
+        List<Card> result = HandDetector.getHandValues(cards);
+        assertEquals(List.of(
+                new Card(Value.SIX, Suit.HEARTS),
+                new Card(Value.FIVE, Suit.HEARTS),
+                new Card(Value.FOUR, Suit.HEARTS),
+                new Card(Value.THREE, Suit.HEARTS),
+                new Card(Value.TWO, Suit.HEARTS)
+        ), result, "Should identify Straight Flush with Six to Two");
+    }
+
+    @Test
     void testFourOfAKindKings() {
         List<Card> cards = new ArrayList<>(List.of(
                 new Card(Value.KING, Suit.HEARTS),

@@ -71,11 +71,11 @@ public class StraightFlush extends Hand {
         int firstSpadeIndex = hasStraight(listSpades);
         if (firstClubIndex != -1 && firstClubIndex != -2) {
             straightFlushCards = new ArrayList<>(listClubs.subList(firstClubIndex, firstClubIndex + 5));
-        } else if (firstDiamondIndex != -1 && firstClubIndex != -2) {
+        } else if (firstDiamondIndex != -1 && firstDiamondIndex != -2) {
             straightFlushCards = new ArrayList<>(listDiamonds.subList(firstDiamondIndex, firstDiamondIndex + 5));
-        } else if (firstHeartIndex != -1 && firstClubIndex != -2) {
+        } else if (firstHeartIndex != -1 && firstHeartIndex != -2) {
             straightFlushCards = new ArrayList<>(listHearts.subList(firstHeartIndex, firstHeartIndex + 5));
-        } else if (firstSpadeIndex != -1 && firstClubIndex != -2) {
+        } else if (firstSpadeIndex != -1 && firstSpadeIndex != -2) {
             straightFlushCards = new ArrayList<>(listSpades.subList(firstSpadeIndex, firstSpadeIndex + 5));
         }
 

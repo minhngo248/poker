@@ -34,6 +34,7 @@ public class HandDetector {
         for (Hand hand : hands) {
             List<Card> highestHand = hand.getHighestHands(cards);
             if (highestHand != null) {
+                System.out.println("Detected hand: " + hand.getClass().getSimpleName());
                 return highestHand; // Return the first valid hand found
             }
         }

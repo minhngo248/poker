@@ -1,17 +1,23 @@
 package com.ms.poker.domain;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Deck {
-    private List<Card> cards;
+    private static volatile List<Card> cards;
 
     private Deck() {}
 
-    public static Deck getInstance() {
-        Deck deck = new Deck();
-        deck.cards = createDeck();
-        return deck;
+    public static List<Card> getCards() {
+        if (cards == null) {
+            synchronized (Deck.class) {
+                if (cards == null) {
+                    cards = createDeck();
+                }
+            }
+        }
+        return cards;
     }
 
     private static List<Card> createDeck() {
@@ -22,5 +28,15 @@ public class Deck {
             }
         }
         return deck;
+    }
+
+    public static void shuffle() {
+        Collections.shuffle(getCards());
+    }
+
+    public static void resetDeck() {
+        synchronized (Deck.class) {
+            cards = createDeck();
+        }
     }
 }
