@@ -4,12 +4,15 @@ import com.ms.poker.domain.Card;
 
 import java.util.*;
 
-public class FullHouse extends Hand {
+public class ThreeOfAKind extends Hand {
     private HashMap<Integer, Integer> cardOccurrences;
     private PriorityQueue<Map.Entry<Integer, Integer>> sortedOccurrences;
 
-    public FullHouse() {
-        super("Full House");
+    /**
+     * Constructor for the ThreeOfAKind class.
+     */
+    public ThreeOfAKind() {
+        super("Three of a Kind");
         cardOccurrences = new HashMap<>();
         // Initialize a priority queue to sort occurrences by frequency and then by value in descending order
         sortedOccurrences = new PriorityQueue<>(
@@ -17,22 +20,15 @@ public class FullHouse extends Hand {
         );
     }
 
-    /**
-     * Returns the highest Full House hand from the given list of cards.
-     * A Full House consists of three cards of one rank and two cards of another rank.
-     *
-     * @param cards the list of 7 cards to check
-     * @return a list of 5 cards representing the highest Full House hand, or null if no valid hand is found
-     */
     @Override
     public List<Card> getHighestHands(List<Card> cards) {
-        // A Full House consists of three cards of one rank and two cards of another rank.
         if (cards == null || cards.size() < 7) {
-            System.out.println("We need at least 7 cards to check for a Full House.");
-            return null; // Not enough cards to form a Full House
+            System.out.println("We need at least 7 cards to check for a Three of a Kind.");
+            return null; // Not enough cards to form a Three of a Kind
         }
 
         // sort the cards by value in descending order
+        // and then by suit
         cards.sort(Comparator.comparing(Card::getValue, Comparator.reverseOrder())
                 .thenComparing(Card::getSuit));
 
@@ -48,7 +44,7 @@ public class FullHouse extends Hand {
 
         // Get the first entry (highest frequency) for three of a kind
         Map.Entry<Integer, Integer> threeOfAKindEntry = sortedOccurrences.poll();
-        if (threeOfAKindEntry == null || threeOfAKindEntry.getValue() < 3) {
+        if (threeOfAKindEntry == null || threeOfAKindEntry.getValue() != 3) {
             resetOccurrences();
             return null; // No three of a kind found
         }
@@ -59,21 +55,28 @@ public class FullHouse extends Hand {
                 .limit(3)
                 .toList());
 
-        // Get the second entry (next highest frequency) for the pair
-        Map.Entry<Integer, Integer> pairEntry = sortedOccurrences.poll();
-        if (pairEntry == null || pairEntry.getValue() < 2) {
-            resetOccurrences();
-            return null; // No pair found
+        // Get other cards to complete the hand
+        Map.Entry<Integer, Integer> secondEntry = sortedOccurrences.poll();
+        if (secondEntry != null && secondEntry.getValue() == 1) {
+            // Add 1 more card from the second-highest entry
+            highestHand.addAll(cards.stream()
+                    .filter(card -> card.getValue().getValue() == secondEntry.getKey())
+                    .limit(1)
+                    .toList());
         }
 
-        // Add pair cards to the highest hand
-        highestHand.addAll(cards.stream()
-                .filter(card -> card.getValue().getValue() == pairEntry.getKey())
-                .limit(2)
-                .toList());
+        // Add the remaining cards to complete the hand
+        Map.Entry<Integer, Integer> thirdEntry = sortedOccurrences.poll();
+        if (thirdEntry != null && thirdEntry.getValue() == 1) {
+            highestHand.addAll(cards.stream()
+                    .filter(card -> card.getValue().getValue() == thirdEntry.getKey())
+                    .limit(1)
+                    .toList());
+        }
+
         // Reset occurrences for the next check
         resetOccurrences();
-        return highestHand.size() == 5 ? highestHand : null; // Return null if not a valid Full House
+        return highestHand.size() == 5 ? highestHand : null; // Return null if not a valid Three of a Kind
     }
 
     private void resetOccurrences() {

@@ -1,10 +1,7 @@
 package com.ms.poker.detector;
 
 import com.ms.poker.domain.Card;
-import com.ms.poker.domain.hands.FourOfAKind;
-import com.ms.poker.domain.hands.Hand;
-import com.ms.poker.domain.hands.RoyalFlush;
-import com.ms.poker.domain.hands.StraightFlush;
+import com.ms.poker.domain.hands.*;
 
 import java.util.List;
 
@@ -12,7 +9,14 @@ public class HandDetector {
     private static final List<Hand> hands = List.of(
             new RoyalFlush(),
             new StraightFlush(),
-            new FourOfAKind()
+            new FourOfAKind(),
+            new FullHouse(),
+            new Flush(),
+            new Straight(),
+            new ThreeOfAKind(),
+            new TwoPair(),
+            new Pair(),
+            new HighCard()
     );
 
     /**
